@@ -11,10 +11,28 @@ if (Meteor.isClient) {
       return PlayersList.find() 
     },
     
-    'otherHelperFunction': function(){ 
-      return "Some other function"
+    'selectedClass': function(){ 
+      var playerId = this._id
+      var selectedPlayer = Session.get('selectedPlayer');
+      if (playerId == selectedPlayer) {
+        return "selected"
+      }
+
     } 
   });
+
+  Template.leaderboard.events({
+    'mouseover .player': function() {
+      var playerId = this._id;
+      Session.set('selectedPlayer', playerId );
+      
+
+    }
+
+
+  });
+
+
 }
 
 if (Meteor.isServer) {
