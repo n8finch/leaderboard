@@ -1,23 +1,22 @@
+
+PlayersList = new Mongo.Collection('players');
+
+
+
 if (Meteor.isClient) {
-  // counter starts at 0
-  Session.setDefault('counter', 0);
-
-  Template.hello.helpers({
-    counter: function () {
-      return Session.get('counter');
-    }
-  });
-
-  Template.hello.events({
-    'click button': function () {
-      // increment the counter when button is clicked
-      Session.set('counter', Session.get('counter') + 1);
-    }
+  // client only
+ 
+  Template.leaderboard.helpers({ 
+    'player': function(){
+      return PlayersList.find() 
+    },
+    
+    'otherHelperFunction': function(){ 
+      return "Some other function"
+    } 
   });
 }
 
 if (Meteor.isServer) {
-  Meteor.startup(function () {
-    // code to run on server at startup
-  });
+  // server only
 }
