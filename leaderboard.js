@@ -8,7 +8,8 @@ if (Meteor.isClient) {
  
   Template.leaderboard.helpers({ 
     'player': function(){
-      return PlayersList.find({}, {sort: {score: -1, name: 1} })
+      var currentUserId = Meteor.userId();
+      return PlayersList.find({createdBy: currentUserId}, {sort: {score: -1, name: 1} })
     },
     
     'selectedClass': function(){ 
@@ -43,11 +44,6 @@ if (Meteor.isClient) {
       var selectedPlayer = Session.get('selectedPlayer');
       PlayersList.update(selectedPlayer, {$inc: {score: -5} });
 
-    },
-
-    'click .remove': function() {
-      var selectedPlayer = Session.get('selectedPlayer');
-      PlayersList.remove(selectedPlayer);
     }
 
 
@@ -57,13 +53,21 @@ if (Meteor.isClient) {
     'submit form': function(){
       event.preventDefault();
       var playerNameVar = event.target.playerName.value;
+      var currentUserId = Meteor.userId();
       PlayersList.insert({
         name: playerNameVar,
-        score: 0
+        score: 0,
+        createdBy: currentUserId
 
       })
 
+    },
+
+    'click .remove': function() {
+      var selectedPlayer = Session.get('selectedPlayer');
+      PlayersList.remove(selectedPlayer);
     }
+
 
   })
 
